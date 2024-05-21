@@ -12,6 +12,7 @@ class Category extends Model
         'name',
         'description',
         'pharmacy_id',
+        'image'
     ];
 
     public function pharmacy()

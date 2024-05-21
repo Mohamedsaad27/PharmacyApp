@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -23,4 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::post('logout', [AuthController::class, 'logout'])
+        ->middleware(['auth:api']);
+
+//Category Routes
+Route::group(['middleware' => ['verify.token'], 'prefix' => 'category'], function () {
+    Route::get('/index', [CategoryController::class, 'index']);
+    Route::post('/add', [CategoryController::class, 'store']);
+    Route::post('/delete/{id}', [CategoryController::class, 'delete']);
+    Route::post('/edit/{id}', [CategoryController::class, 'edit']);
+});
