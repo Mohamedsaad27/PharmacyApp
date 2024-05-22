@@ -12,7 +12,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['pharmacy', 'patient', 'soctor']);
+            $table->enum('role', ['pharmacy', 'patient', 'doctor']);
             $table->timestamps();
         });
     }

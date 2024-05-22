@@ -17,7 +17,7 @@ class CategoryController extends Controller
         try {
            $categories = Category::where('pharmacy_id',Auth::id())->get();
            if ($categories->isEmpty()){
-               return $this->errorResponse('No Categories For This Pharamcy',404);
+               return $this->errorResponse('No Categories For This Pharmacy',404);
            }
             return $this->successResponse($categories,'Categories Retrieved Successfully',200);
         }catch (\Exception $exception){
@@ -39,7 +39,7 @@ class CategoryController extends Controller
             $imageName = 'default.jpg';
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time() . '_' . $image->getClientOriginalExtension();
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('categories', $imageName);
             }
         $category = Category::create([
@@ -80,7 +80,7 @@ class CategoryController extends Controller
             ];
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time() . '_' . $image->getClientOriginalExtension();
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('categories', $imageName);
                 $data['image'] = $imageName;
             }

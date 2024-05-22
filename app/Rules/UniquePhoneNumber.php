@@ -17,7 +17,9 @@ class UniquePhoneNumber implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //
+        if (!$this->passes($attribute, $value)) {
+            $fail('The phone number has already been taken.');
+        }
     }
     public function passes($attribute, $value)
     {
