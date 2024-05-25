@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,10 +47,19 @@ Route::group(['middleware'=>['verify.token'],'prefix' => 'product'],function () 
     Route::post('/delete/{id}', [ProductController::class, 'delete']);
     Route::post('/edit/{id}', [ProductController::class, 'edit']);
 });
-
 // Favorite Routes
 Route::group(['middleware'=>['verify.token'],'prefix' => 'favorite'],function () {
     Route::get('/favorite-products',[FavoriteController::class,'getFavoriteProducts']);// Get ALL Favorite Products For Logged User
     Route::post('/add-favorite-products',[FavoriteController::class,'storeFavoriteProducts']);// Store Favorite Products For Logged User
     Route::post('/delete-favorite-products/{id}',[FavoriteController::class,'deleteFavoriteProducts']); //Delete Favorite Products For Logged User
+});
+// User Routes
+Route::group(['middleware'=>['verify.token'],'prefix' => 'user'],function () {
+    Route::get('/add-to-cart',[CartController::class,'addProductToCart']);// add Product To Cart
+    Route::post('/show-cart-items',[CartController::class,'showProductOnCart']);// Show Cart Items
+    Route::post('/delete-from-cart',[CartController::class,'deleteProductFromCart']); //Delete Product From Cart
+});
+
+Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
+    route::get('/show-dictionary',[PharmacyController::class,'showDictionary']);
 });

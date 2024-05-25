@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -83,18 +84,19 @@ class ProductController extends Controller
             if($validateData->fails()) {
                 return $this->errorResponse($validateData->errors(), 422);
             }
-            $imageName = 'default.jpg';
+            $imageUrl = 'default.jpg';
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('products', $imageName);
+                $imagePath = $image->storeAs('ProductImages', $imageName);
+                $imageUrl = Storage::url($imagePath);
             }
             $product = Product::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'price' => $request->price,
                 'quantity' => $request->quantity,
-                'image' => $imageName,
+                'image' => $imageUrl,
                 'category_id' => $request->category_id,
                 'pharmacy_id' => Auth::id(),
             ]);

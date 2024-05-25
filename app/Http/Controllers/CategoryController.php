@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -36,16 +37,18 @@ class CategoryController extends Controller
             if($validateData->fails()){
                 return $this->errorResponse($validateData->errors(), 422);
             }
-            $imageName = 'default.jpg';
+            $imageUrl = 'default.jpg';
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('categories', $imageName);
+                $imagePath =  $image->storeAs('CategoriesImages', $imageName);
+                $imageUrl = Storage::url($imagePath);
+
             }
         $category = Category::create([
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $imageName,
+            'image' => $imageUrl,
             'pharmacy_id' => Auth::id()
         ]);
         return  $this->successResponse(
