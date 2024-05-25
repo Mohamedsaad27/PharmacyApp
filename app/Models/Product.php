@@ -25,7 +25,7 @@ class Product extends Model
 
     public function pharmacy()
     {
-        return $this->belongsTo(Pharmacy::class);
+        return $this->belongsTo(Pharmacy::class, 'user_id', 'id');
     }
 
     public function drugs()

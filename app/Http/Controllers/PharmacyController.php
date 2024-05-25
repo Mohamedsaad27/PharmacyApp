@@ -26,7 +26,31 @@ class PharmacyController extends Controller
             );
         }catch (\Exception $exception)
         {
-            return $this->errorResponse(['message'=>$exception->getMessage()],200);
+            return $this->errorResponse(['message'=>$exception->getMessage()],500);
+        }
+    }
+    public function searchOnDictionary(Request $request){
+        try {
+            $request->validate([
+                'query' => 'nullable|string|max:255',
+            ]);
+            $query = $request->query('query');
+            $pharmacy = auth()->user();
+            $matchRecord = Product::where('name', 'LIKE', "%{$query}%")
+                ->where('pharmacy_id',$pharmacy->id)
+                ->get()
+                ->makeHidden(['created_at','updated_at']);
+
+            if($matchRecord->isEmpty()){
+                return $this->errorResponse('NO match record',404);
+            }
+            return $this->successResponse(
+                $matchRecord ,
+                null,
+                200
+            );
+        }catch (\Exception $exception){
+            return $this->errorResponse(['message'=>$exception->getMessage()],500);
         }
     }
 }
