@@ -11,7 +11,6 @@ class Cart extends Model
     protected $fillable = [
         'patient_id',
         'total_price',
-        'status',
     ];
 
     public function patient()

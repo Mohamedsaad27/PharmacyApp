@@ -54,15 +54,15 @@ Route::group(['middleware'=>['verify.token'],'prefix' => 'favorite'],function ()
     Route::post('/delete-favorite-products/{id}',[FavoriteController::class,'deleteFavoriteProducts']); //Delete Favorite Products For Logged User
 });
 // User Routes
-Route::group(['middleware'=>['verify.token'],'prefix' => 'user'],function () {
-    Route::get('/add-to-cart',[CartController::class,'addProductToCart']);// add Product To Cart
-    Route::post('/show-cart-items',[CartController::class,'showProductOnCart']);// Show Cart Items
-    Route::post('/delete-from-cart',[CartController::class,'deleteProductFromCart']); //Delete Product From Cart
+Route::group(['middleware'=>['verify.token'], 'prefix' => 'user'],function () {
+    Route::post('/add-to-cart/{product_id}',[CartController::class,'addProductToCart']);// add Product To Cart
+    Route::post('/update-cart-item/{product}', [CartController::class, 'updateCartItemQuantity']);
+    Route::get('/show-cart-items',[CartController::class,'showProductOnCart']);// Show Cart Items
+    Route::post('/delete-from-cart/{product_id}',[CartController::class,'deleteProductFromCart']); //Delete Product From Cart
 });
-
+// Pharmacy Routes
 Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
-    route::get('/show-dictionary',[PharmacyController::class,'showDictionary']);
-    route::get('/search-on-dictionary',[PharmacyController::class,'searchOnDictionary']);
-    route::post('/upload-drugs-from-excel-sheet',[PharmacyController::class,'uploadExcelSheet']);
-
+    route::get('/show-dictionary',[PharmacyController::class,'showDictionary']); // Show Products In Dictionary
+    route::get('/search-on-dictionary',[PharmacyController::class,'searchOnDictionary']); // Search in Products In Dictionary
+    route::post('/upload-drugs-from-excel-sheet',[PharmacyController::class,'uploadExcelSheet']); //Upload Excel Sheet Contain Products To DB
 });
