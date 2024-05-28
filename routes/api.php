@@ -63,4 +63,6 @@ Route::group(['middleware'=>['verify.token'],'prefix' => 'user'],function () {
 Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
     route::get('/show-dictionary',[PharmacyController::class,'showDictionary']);
     route::get('/search-on-dictionary',[PharmacyController::class,'searchOnDictionary']);
+    route::post('/upload-drugs-from-excel-sheet',[PharmacyController::class,'uploadExcelSheet']);
+
 });

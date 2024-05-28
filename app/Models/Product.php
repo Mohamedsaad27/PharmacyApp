@@ -14,6 +14,9 @@ class Product extends Model
         'price',
         'quantity',
         'image',
+        'effective_material',
+        'side_effects',
+        'dosage',
         'category_id',
         'pharmacy_id',
     ];
@@ -28,10 +31,6 @@ class Product extends Model
         return $this->belongsTo(Pharmacy::class, 'user_id', 'id');
     }
 
-    public function drugs()
-    {
-        return $this->belongsToMany(Drug::class, 'product_drugs');
-    }
 
     public function favorites()
     {
