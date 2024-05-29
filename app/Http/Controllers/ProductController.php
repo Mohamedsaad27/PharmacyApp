@@ -56,6 +56,9 @@ class ProductController extends Controller
                 'price' => ['required', 'numeric', 'min:0'],
                 'quantity' => ['required', 'integer', 'min:0'],
                 'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+                'effective_material' => ['required', 'string', 'max:255'],
+                'side_effects' =>['required', 'string', 'max:255'] ,
+                'dosage' =>['required', 'string', 'max:255'] ,
                 'category_id' => ['required', 'integer', 'exists:categories,id'],
                 'pharmacy_id' => ['integer', 'exists:users,id']
             ];
@@ -74,6 +77,15 @@ class ProductController extends Controller
                 'image.image' => 'The file must be an image.',
                 'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif, svg.',
                 'image.max' => 'The image may not be greater than 2048 kilobytes.',
+                'effective_material.required' => 'The product name is required.',
+                'effective_material.string' => 'The product name must be a string.',
+                'effective_material.max' => 'The product name may not be greater than 255 characters.',
+                'side_effects.required' => 'The product name is required.',
+                'side_effects.string' => 'The product name must be a string.',
+                'side_effects.max' => 'The product name may not be greater than 255 characters.',
+                'dosage.required' => 'The product name is required.',
+                'dosage.string' => 'The product name must be a string.',
+                'dosage.max' => 'The product name may not be greater than 255 characters.',
                 'category_id.required' => 'The category ID is required.',
                 'category_id.integer' => 'The category ID must be an integer.',
                 'category_id.exists' => 'The selected category ID is invalid.',
@@ -97,6 +109,9 @@ class ProductController extends Controller
                 'price' => $request->price,
                 'quantity' => $request->quantity,
                 'image' => $imageUrl,
+                'effective_material' => $request->effective_material ,
+                'side_effects' => $request->side_effects ,
+                'dosage' => $request->dosage,
                 'category_id' => $request->category_id,
                 'pharmacy_id' => Auth::id(),
             ]);
@@ -121,6 +136,9 @@ class ProductController extends Controller
                 'price' => ['nullable', 'numeric', 'min:0'],
                 'quantity' => ['nullable', 'integer', 'min:0'],
                 'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+                'effective_material' => ['nullable', 'string', 'max:255'],
+                'side_effects' => ['nullable', 'string', 'max:255'],
+                'dosage' => ['nullable', 'string', 'max:255'],
                 'category_id' => ['nullable', 'integer', 'exists:categories,id'],
                 'pharmacy_id' => ['integer', 'exists:users,id']
             ]);
@@ -133,6 +151,9 @@ class ProductController extends Controller
                 'price'=>$request->price ? $request->price : $product->price,
                 'quantity'=>$request->quantity ? $request->quantity : $product->quantity,
                 'image'=>$request->image ? $request->image : $product->image,
+                'effective_material'=>$request->effective_material ? $request->effective_material : $product->effective_material,
+                'side_effects'=>$request->side_effects ? $request->side_effects : $product->side_effects,
+                'dosage'=>$request->dosage ? $request->dosage : $product->dosage,
                 'category_id'=>$request->category_id ? $request->category_id : $product->category_id
             ];
             if ($request->hasFile('image')) {

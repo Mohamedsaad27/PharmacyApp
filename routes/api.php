@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -59,6 +60,9 @@ Route::group(['middleware'=>['verify.token'], 'prefix' => 'user'],function () {
     Route::post('/update-cart-item/{product}', [CartController::class, 'updateCartItemQuantity']);
     Route::get('/show-cart-items',[CartController::class,'showProductOnCart']);// Show Cart Items
     Route::post('/delete-from-cart/{product_id}',[CartController::class,'deleteProductFromCart']); //Delete Product From Cart
+    Route::get('/home-page',[UserController::class,'homePage']); //Home Page For Auth User
+    Route::get('/doctor-list',[UserController::class,'doctorList']); //Home Page For Auth User
+    Route::get('/update-personal-details',[UserController::class,'updatePersonalDetails']); //Home Page For Auth User
 });
 // Pharmacy Routes
 Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
