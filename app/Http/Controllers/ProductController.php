@@ -15,9 +15,9 @@ class ProductController extends Controller
     use ApiResponseTrait;
     public function index(){
         try {
-            $products = Product::where('pharmacy_id',Auth::id())->get();
+            $products = Product::all()->sortByDesc('price')->take(20);
             if ($products->isEmpty()){
-                return $this->errorResponse('No Products For This Pharmacy',404);
+                return $this->errorResponse('No Products Found',404);
             }
             return $this->successResponse($products,'Categories Retrieved Successfully',200);
         }catch (\Exception $exception){

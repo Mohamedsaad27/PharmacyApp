@@ -10,7 +10,7 @@ class Pharmacy extends Model
     use HasFactory;
     public $timestamps = true;
     protected $fillable = [
-        'county',
+        'country',
         'city',
         'state',
         'phone_number',

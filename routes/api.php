@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\ProductController;
@@ -29,8 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])
-        ->middleware(['auth:api']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware(['auth:api']);
 
 //Category Routes
 Route::group(['middleware' => ['verify.token'], 'prefix' => 'category'], function () {
@@ -41,8 +41,6 @@ Route::group(['middleware' => ['verify.token'], 'prefix' => 'category'], functio
 });
 //Product Routes
 Route::group(['middleware'=>['verify.token'],'prefix' => 'product'],function () {
-    Route::get('/index', [ProductController::class, 'index']);
-    Route::get('/get-products-by-category/{category_id}', [ProductController::class, 'productsByCategoryId']);
     Route::get('/get-product-by-id/{id}', [ProductController::class, 'getProductById']);
     Route::post('/add', [ProductController::class, 'store']);
     Route::post('/delete/{id}', [ProductController::class, 'delete']);
@@ -72,5 +70,11 @@ Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
 });
 //Chat Routes
 Route::group(['middleware'=>['verify.token'],'prefix'=>'chat'],function (){
-    Route::post('send-message',[ChatController::class,'sendMessage']);
+    Route::post('send-message', [ChatController::class, 'sendMessage']);
+    Route::get('get-chat', [ChatController::class, 'getChatWithPharmacyForUser']);
 });
+
+route::get('/show-all-pharmacies',[PharmacyController::class,'showAllPharmacies']); // Show All Pharmacies
+route::get('/get-categories-by-pharmacy-id/{pharmacy_id}', [CategoryController::class, 'getCategoriesByPharmacyId']);
+Route::get('product/index', [ProductController::class, 'index']);
+Route::get('product/get-products-by-category/{category_id}', [ProductController::class, 'productsByCategoryId']);

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Pharmacy;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +23,26 @@ class CategoryController extends Controller
                return $this->errorResponse('No Categories For This Pharmacy',404);
            }
             return $this->successResponse($categories,'Categories Retrieved Successfully',200);
+        }catch (\Exception $exception){
+            return $this->errorResponse($exception->getMessage(),500);
+        }
+    }
+    public function getCategoriesByPharmacyId($pharmacy_id){
+        try {
+            $pharmacy = User::where('id', $pharmacy_id)
+                ->where('role', 'pharmacy')
+                ->first();
+            if (!$pharmacy) {
+                return $this->errorResponse('Pharmacy Not Found', 404);
+            }
+            $categories = Category::where('pharmacy_id',$pharmacy_id)->get();
+            if ($categories->isEmpty()){
+                return $this->errorResponse('No Categories For This Pharmacy',404);
+            }
+            return $this->successResponse(
+                $categories,
+                'Categories Retrieved Successfully',
+                200);
         }catch (\Exception $exception){
             return $this->errorResponse($exception->getMessage(),500);
         }

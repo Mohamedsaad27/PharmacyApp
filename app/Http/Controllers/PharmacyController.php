@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ProductsImport;
 use App\Models\Product;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,24 @@ use Maatwebsite\Excel\Validators\ValidationException;
 class PharmacyController extends Controller
 {
     use ApiResponseTrait;
+    public function showAllPharmacies(){
+        try {
+           $pharmacies = User::where('role','pharmacy')
+               ->with('pharmacy')
+               ->get()
+               ->makeHidden(['created_at','updated_at']) ;
+           if ($pharmacies->isEmpty()){
+            return $this->errorResponse('No Pharmacies found',404);
+           }
+           return $this->successResponse(
+               $pharmacies ,
+               'Pharmacies Retrieved Successfully',
+               200
+           );
+        }catch (\Exception $exception) {
+            return $this->errorResponse(['message'=>$exception->getMessage()],500);
+        }
+    }
     public function showDictionary(){
         try {
             $dictionaryItems = Product::with('drugs')
