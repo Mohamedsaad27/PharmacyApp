@@ -71,7 +71,8 @@ Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
 //Chat Routes
 Route::group(['middleware'=>['verify.token'],'prefix'=>'chat'],function (){
     Route::post('send-message', [ChatController::class, 'sendMessage']);
-    Route::get('get-chat', [ChatController::class, 'getChatWithPharmacyForUser']);
+    Route::get('get-chat-for-patient', [ChatController::class, 'getChatWithPharmacyForUser']);
+    Route::get('get-chat-for-pharmacy', [ChatController::class, 'getChatWithPatientForPharmacy']);
 });
 
 route::get('/show-all-pharmacies',[PharmacyController::class,'showAllPharmacies']); // Show All Pharmacies

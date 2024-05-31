@@ -85,4 +85,18 @@ class ChatController extends Controller
             return $this->errorResponse(['message' => $exception->getMessage()], 500);
         }
     }
+
+    public function getChatWithPatientForPharmacy(Request $request)
+    {
+        try {
+            $patientId = $request->input('patient');
+            $chat = Chat::with('messages')->where('patient_id', $patientId)->first();
+            if (!$chat) {
+                return $this->errorResponse('No chat with this Patient', 404);
+            }
+            return $this->successResponse($chat, 'Chat Retrieved Successfully', 200);
+        } catch (\Exception $exception) {
+            return $this->errorResponse(['message' => $exception->getMessage()], 500);
+        }
+    }
 }
