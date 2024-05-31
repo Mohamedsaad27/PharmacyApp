@@ -10,7 +10,7 @@ class Chat extends Model
     use HasFactory;
     protected $fillable = [
         'patient_id',
-        'doctor_id',
+        'pharmacy_id',
         'started_at',
         'ended_at',
     ];
@@ -20,13 +20,13 @@ class Chat extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function doctor()
+    public function pharmacy()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(Pharmacy::class);
     }
 
     public function messages()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Messages::class);
     }
 }

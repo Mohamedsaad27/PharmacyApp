@@ -10,7 +10,9 @@ class Patient extends Model
     use HasFactory;
     public $timestamps = true;
     protected $fillable = [
-        'address',
+        'country',
+        'city',
+        'state',
         'phone_number',
         'user_id',
     ];

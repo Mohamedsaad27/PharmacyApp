@@ -25,12 +25,9 @@ class AuthController extends Controller
                 'password' => 'required|string|min:6',
                 'role' => 'required|string|in:doctor,patient,pharmacy',
                 'phone_number' => ['required', 'string', 'max:15', new UniquePhoneNumber],
-                'address' => 'nullable|string|max:255',
                 'country' => 'nullable|string|max:255',
                 'city' => 'nullable|string|max:255',
                 'state' => 'nullable|string|max:255',
-                'license_number' => 'nullable|string|max:50',
-                'specialization' => 'nullable|string|max:255',
             ]);
             if ($validator->fails()){
                 return response()->json($validator->errors(), 422);
@@ -43,19 +40,13 @@ class AuthController extends Controller
             ]);
             switch ($request->role)
             {
-                case 'doctor':
-                    Doctor::create([
-                        'user_id' => $user->id,
-                        'phone_number' => $request->phone_number,
-                        'address' => $request->address,
-                        'specialization' => $request->specialization,
-                    ]);
-                    break;
                 case 'patient':
                     Patient::create([
                         'user_id' => $user->id,
                         'phone_number' => $request->phone_number,
-                        'address' => $request->address,
+                        'country' => $request->country,
+                        'city' => $request->city,
+                        'state' => $request->state,
                     ]);
                     break;
                 case 'pharmacy':

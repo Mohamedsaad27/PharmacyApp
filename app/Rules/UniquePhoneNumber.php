@@ -23,11 +23,10 @@ class UniquePhoneNumber implements ValidationRule
     }
     public function passes($attribute, $value)
     {
-        $doctorExists = Doctor::where('phone_number', $value)->exists();
         $patientExists = Patient::where('phone_number', $value)->exists();
         $pharmacyExists = Pharmacy::where('phone_number', $value)->exists();
 
-        return !$doctorExists && !$patientExists && !$pharmacyExists;
+        return !$patientExists && !$pharmacyExists;
     }
 
     public function message()

@@ -70,3 +70,7 @@ Route::group(['middleware'=>['verify.token'],'prefix'=>'pharmacy'],function (){
     route::get('/search-on-dictionary',[PharmacyController::class,'searchOnDictionary']); // Search in Products In Dictionary
     route::post('/upload-drugs-from-excel-sheet',[PharmacyController::class,'uploadExcelSheet']); //Upload Excel Sheet Contain Products To DB
 });
+//Chat Routes
+Route::group(['middleware'=>['verify.token'],'prefix'=>'chat'],function (){
+    Route::post('send-message',[ChatController::class,'sendMessage']);
+});
