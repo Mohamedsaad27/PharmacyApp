@@ -23,10 +23,10 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
-                'role' => 'required|string|in:doctor,patient,pharmacy',
+                'role' => 'required|string|in:patient,pharmacy',
                 'phone_number' => ['required', 'string', 'max:15', new UniquePhoneNumber],
                 'country' => 'nullable|string|max:255',
-                'city' => 'nullable|string|max:255',
+                'city' => 'required|string|max:255',
                 'state' => 'nullable|string|max:255',
             ]);
             if ($validator->fails()){
@@ -81,7 +81,15 @@ class AuthController extends Controller
                 return $this->errorResponse('Invalid email or Password',401);
             }
             $user = auth()->user();
-
+            switch ($user->role){
+                case 'patient':
+                    $user['data'] = $user->patient;
+                    break;
+                case 'pharmacy':
+                    $user['data'] = $user->pharmacy;
+                    break;
+            }
+            unset($user['data']);
             return $this->successResponse([
                 'user' => $user,
                 'token' => $token,
