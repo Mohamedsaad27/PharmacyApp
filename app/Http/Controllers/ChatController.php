@@ -99,4 +99,23 @@ class ChatController extends Controller
             return $this->errorResponse(['message' => $exception->getMessage()], 500);
         }
     }
+
+    public function getPatientWhoHasChatWithLoggedPharmacy(Request $request){
+        try {
+            $pharmacy_id = Auth::id();
+            $patients = Chat::with('patient')
+                ->where('pharmacy_id',$pharmacy_id)
+                ->get();
+            if ($patients->isEmpty()){
+                return $this->errorResponse('No Chats Found',404);
+            }
+            return $this->successResponse(
+                $patients,
+                'Chats Retrieved Successfully',
+                200
+            );
+        }catch (\Exception $exception){
+            return $this->errorResponse(['message'=>$exception->getMessage()],500);
+        }
+    }
 }
